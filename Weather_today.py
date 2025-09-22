@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 """
-WSJ Markets Brief (10AM ET) — feed ALL items at once
-- Fetch ALL recent WSJ Markets / US Business RSS items within HOURS_BACK (no caps, no keyword filters)
+Weather Brief (10AM ET) — feed ALL items at once
+- Fetch ALL recent Weather US  RSS items within HOURS_BACK (no caps, no keyword filters)
 - Provide title + combined summary/description for EVERY item to ChatGPT in one prompt
 - Model writes 2–5 numbered paragraphs (1), (2), …; each 2–3 sentences, no repetition across paragraphs
 - Inline citations must refer to the evidence list [1]..[N]; code normalizes, validates, and re-numbers cited items to clean 1..K
@@ -20,12 +20,8 @@ import pytz
 
 # ---------------- Settings ----------------
 TIMEZONE = os.getenv("TIMEZONE", "America/New_York")
-WSJ_FEEDS = [
-    "https://feeds.content.dowjones.io/public/rss/RSSMarketsMain",
-    "https://feeds.content.dowjones.io/public/rss/WSJcomUSBusiness",
-    "https://feeds.content.dowjones.io/public/rss/RSSWSJD",
-    "https://feeds.content.dowjones.io/public/rss/socialeconomyfeed",
-    "https://seekingalpha.com/api/sa/combined/TSLA.xml",
+WEATHER_FEEDS = [
+    "http://rss.accuweather.com/rss/liveweather_rss.asp?locCode=10583",
 ]
 HOURS_BACK = int(os.getenv("HOURS_BACK", "26"))
 INCLUDE_WEEKENDS = os.getenv("INCLUDE_WEEKENDS", "false").lower() == "true"
@@ -81,7 +77,7 @@ def parse_pubdate(entry):
 def fetch_items():
     """Fetch ALL recent items within HOURS_BACK; de-dup by link; newest first."""
     items = []
-    for url in WSJ_FEEDS:
+    for url in WEATHER_FEEDS:
         logging.info(f"Fetching: {url}")
         feed = feedparser.parse(url)
         if getattr(feed, "bozo", 0):
