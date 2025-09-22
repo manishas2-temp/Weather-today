@@ -1,0 +1,4 @@
+feedparser
+python-dateutil
+pytz
+openai>=1.0.0    # optional; remove if you won’t use LLM summaries
